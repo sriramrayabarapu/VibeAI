@@ -1,4 +1,4 @@
-const API_KEY = process.env.GOOGLE_API_KEY;
+const API_KEY = process.env.NVIDIA_API_KEY || process.env.GOOGLE_API_KEY;
 
 module.exports = async (req, res) => {
   // Handle CORS preflight & headers
@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
   if (!API_KEY) {
     return res.status(500).json({
       error: {
-        message: "Gemini API Key is not configured. Please add the GOOGLE_API_KEY environment variable under your Vercel Project Settings."
+        message: "API Key is not configured. Please add the NVIDIA_API_KEY environment variable under your Vercel Project Settings."
       }
     });
   }
@@ -34,22 +34,22 @@ module.exports = async (req, res) => {
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
+      "https://integrate.api.nvidia.com/v1/chat/completions",
       {
         method: "POST",
         headers: {
+          "Authorization": `Bearer ${API_KEY}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          contents: [
+          model: "meta/llama-3.1-8b-instruct",
+          messages: [
             {
-              parts: [
-                {
-                  text: message
-                }
-              ]
+              role: "user",
+              content: message
             }
-          ]
+          ],
+          max_tokens: 1024
         })
       }
     );
@@ -57,10 +57,20 @@ module.exports = async (req, res) => {
     const data = await response.json();
 
     if (!response.ok) {
-      return res.status(response.status).json(data);
+      return res.status(response.status).json({ error: { message: data.detail || "API Error" } });
     }
 
-    return res.json(data);
+    const replyText = data.choices[0]?.message?.content || "";
+    
+    return res.json({
+      candidates: [
+        {
+          content: {
+            parts: [{ text: replyText }]
+          }
+        }
+      ]
+    });
   } catch (error) {
     console.error("Proxy error:", error);
     return res.status(500).json({ error: { message: "Server proxy error." } });

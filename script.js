@@ -164,6 +164,7 @@ function loadUser() {
 window.onload = () => {
   initHardcodedReel();
   initMusic();
+  initCarousel();
 
   let isLoggedIn =
   localStorage.getItem(
@@ -1710,4 +1711,57 @@ function viewProfileReel(reelId) {
       }
     }
   }, 200);
+}
+
+// ==========================
+// INTERACTIVE CAROUSEL
+// ==========================
+let currentCarouselIndex = 0;
+let carouselAutoplayInterval = null;
+
+function initCarousel() {
+  const slides = document.querySelectorAll(".carousel-slide");
+  const indicators = document.querySelectorAll(".carousel-indicators .indicator");
+  if (!slides.length) return;
+
+  function showSlide(index) {
+    slides.forEach(s => s.classList.remove("active"));
+    indicators.forEach(ind => ind.classList.remove("active"));
+    
+    currentCarouselIndex = (index + slides.length) % slides.length;
+    
+    slides[currentCarouselIndex].classList.add("active");
+    indicators[currentCarouselIndex].classList.add("active");
+  }
+
+  window.moveCarousel = function(step) {
+    showSlide(currentCarouselIndex + step);
+    resetCarouselAutoplay();
+  };
+
+  window.setCarouselSlide = function(index) {
+    showSlide(index);
+    resetCarouselAutoplay();
+  };
+
+  function startCarouselAutoplay() {
+    carouselAutoplayInterval = setInterval(() => {
+      showSlide(currentCarouselIndex + 1);
+    }, 5000);
+  }
+
+  function resetCarouselAutoplay() {
+    clearInterval(carouselAutoplayInterval);
+    startCarouselAutoplay();
+  }
+
+  // Start autoplay
+  startCarouselAutoplay();
+
+  // Pause on hover
+  const container = document.querySelector(".carousel-container");
+  if (container) {
+    container.addEventListener("mouseenter", () => clearInterval(carouselAutoplayInterval));
+    container.addEventListener("mouseleave", startCarouselAutoplay);
+  }
 }

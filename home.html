@@ -157,6 +157,50 @@
 
       </div>
 
+      <!-- Aurora UI glassmorphic Carousel -->
+      <div class="carousel-container">
+        <div class="carousel-track-wrapper">
+          <div class="carousel-track" id="carouselTrack">
+            <!-- Slide 1 -->
+            <div class="carousel-slide active">
+              <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop" alt="AI Chat">
+              <div class="slide-overlay">
+                <h3>VibeAI Interactive Chat</h3>
+                <p>Have an open conversation with our advanced Gemini-powered AI chatbot.</p>
+                <button class="brutal-btn try-btn" onclick="showPage('ai')">Chat Now</button>
+              </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="carousel-slide">
+              <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop" alt="Spotify Hub">
+              <div class="slide-overlay">
+                <h3>VibeAI Music Dashboard</h3>
+                <p>Listen to direct preview streams of premium Telugu, Hindi, and English tracks.</p>
+                <button class="brutal-btn try-btn" onclick="showPage('music')">Listen Now</button>
+              </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="carousel-slide">
+              <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1200&auto=format&fit=crop" alt="Creative Reels">
+              <div class="slide-overlay">
+                <h3>Create & Discover Reels</h3>
+                <p>Watch short videos or upload your own creative ideas into your profile gallery.</p>
+                <button class="brutal-btn try-btn" onclick="showPage('reels')">Explore Reels</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Arrow Navigation -->
+        <button class="carousel-arrow prev" onclick="moveCarousel(-1)">&#10094;</button>
+        <button class="carousel-arrow next" onclick="moveCarousel(1)">&#10095;</button>
+        <!-- Bottom Indicators -->
+        <div class="carousel-indicators">
+          <span class="indicator active" onclick="setCarouselSlide(0)"></span>
+          <span class="indicator" onclick="setCarouselSlide(1)"></span>
+          <span class="indicator" onclick="setCarouselSlide(2)"></span>
+        </div>
+      </div>
+
     </section>
 
     <!-- REELS -->

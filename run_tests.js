@@ -67,7 +67,7 @@ async function runTests() {
 
     // Test 2: style.css is served
     const cssRes = await get(`${BASE_URL}/style.css`);
-    assert(cssRes.status === 200 && cssRes.body.includes('VibeAI - MASTER NEUMORPHISM'), "Static file '/style.css' is served correctly and contains Neumorphism headers");
+    assert(cssRes.status === 200 && cssRes.body.includes('VibeAI - MASTER AURORA UI'), "Static file '/style.css' is served correctly and contains Aurora UI headers");
 
     // Test 3: script.js is served
     const jsRes = await get(`${BASE_URL}/script.js`);

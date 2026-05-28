@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>VibeAI - Login</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- LEFT SIDE -->
+
+    <div class="left-section">
+
+      <h1>VibeAI</h1>
+
+      <p>
+        AI Powered Entertainment Platform
+      </p>
+
+      <img
+        src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop"
+        alt="AI Image">
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="right-section">
+
+      <!-- REGISTER -->
+
+      <div class="form-container active" id="registerForm">
+
+        <h2>Create Account</h2>
+
+        <input type="text" id="regName" placeholder="Full Name">
+
+        <input type="email" id="regEmail" placeholder="Email">
+
+        <input type="password" id="regPassword" placeholder="Password">
+
+        <button onclick="registerUser()">
+          Register
+        </button>
+
+        <p>
+          Already have an account?
+          <span onclick="showLogin()">Login</span>
+        </p>
+
+      </div>
+
+      <!-- LOGIN -->
+
+      <div class="form-container" id="loginForm">
+
+        <h2>Welcome Back</h2>
+
+        <input type="email" id="loginEmail" placeholder="Email">
+
+        <input type="password" id="loginPassword" placeholder="Password">
+
+        <button onclick="loginUser()">
+          Login
+        </button>
+
+        <p>
+          Don't have an account?
+          <span onclick="showRegister()">Register</span>
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>

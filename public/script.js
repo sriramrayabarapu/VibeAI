@@ -167,6 +167,7 @@ window.onload = () => {
   initHardcodedReel();
   initMusic();
   initCarousel();
+  initApiSettings();
 
   let isLoggedIn =
   localStorage.getItem(
@@ -247,6 +248,65 @@ function showPage(pageId) {
 }
 
 // ==========================
+// CUSTOM GEMINI API KEY MANAGEMENT
+// ==========================
+
+function initApiSettings() {
+  const customKey = localStorage.getItem("vibe_custom_api_key");
+  const keyInput = document.getElementById("customApiKeyInput");
+  const statusMsg = document.getElementById("apiStatusMessage");
+  
+  if (keyInput) {
+    keyInput.value = customKey || "";
+  }
+  
+  if (statusMsg) {
+    if (customKey) {
+      statusMsg.innerText = "🔑 Using your custom Gemini API key.";
+      statusMsg.className = "api-status";
+    } else {
+      statusMsg.innerText = "🌐 Using shared cloud API proxy (default).";
+      statusMsg.className = "api-status warning";
+    }
+  }
+}
+
+function toggleApiSettings() {
+  const content = document.getElementById("apiSettingsContent");
+  const icon = document.getElementById("apiToggleIcon");
+  if (content) {
+    if (content.classList.contains("active")) {
+      content.classList.remove("active");
+      icon.innerText = "▼";
+    } else {
+      content.classList.add("active");
+      icon.innerText = "▲";
+    }
+  }
+}
+
+function saveCustomApiKey() {
+  const keyInput = document.getElementById("customApiKeyInput");
+  if (!keyInput) return;
+  const key = keyInput.value.trim();
+  
+  if (!key) {
+    alert("Please enter a valid API key or click Clear.");
+    return;
+  }
+  
+  localStorage.setItem("vibe_custom_api_key", key);
+  initApiSettings();
+  alert("✅ Custom API key saved successfully!");
+}
+
+function clearCustomApiKey() {
+  localStorage.removeItem("vibe_custom_api_key");
+  initApiSettings();
+  alert("🧹 Custom API key cleared. Using default shared proxy.");
+}
+
+// ==========================
 // GEMINI AI CHATBOT
 // ==========================
 
@@ -302,53 +362,38 @@ async function sendMessage() {
     let response;
     let data;
 
-    try {
-      response = await fetch(
-        "/generate",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            message: message
-          })
-        }
-      );
-      data = await response.json();
-    } catch (proxyError) {
-      console.log("Local proxy server is down, falling back to direct API call...", proxyError);
-      
-      const fallbackResponse = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyA0ptZBz9Nhe5ASUVP1L_c370py4381jwQ`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [
-                  {
-                    text: message
-                  }
-                ]
-              }
-            ]
-          })
-        }
-      );
-      
-      data = await fallbackResponse.json();
+    let headers = {
+      "Content-Type": "application/json"
+    };
+
+    const customKey = localStorage.getItem("vibe_custom_api_key");
+    if (customKey) {
+      headers["x-api-key"] = customKey;
     }
+
+    response = await fetch(
+      "/generate",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          message: message
+        })
+      }
+    );
+    data = await response.json();
 
     console.log(data);
 
     // SUCCESS RESPONSE
 
     if(data.error) {
-      botDiv.innerText = "❌ " + data.error.message;
+      let errMsg = data.error.message;
+      if (errMsg.includes("leaked") || errMsg.includes("API key")) {
+        botDiv.innerHTML = `❌ ${errMsg}<br><br><span style="color: #f59e0b; font-weight: bold; display: block; margin-top: 8px;">💡 Tip: Click the "🔑 Gemini API Key Configuration" panel at the top of the chat to configure your own active Gemini API key!</span>`;
+      } else {
+        botDiv.innerText = "❌ " + errMsg;
+      }
     }
     else {
       let aiText = "";

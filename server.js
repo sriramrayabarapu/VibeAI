@@ -9,17 +9,17 @@ const API_KEY = process.env.GOOGLE_API_KEY || "AIzaSyA0ptZBz9Nhe5ASUVP1L_c370py4
 app.use(cors());
 app.use(express.json());
 
-// Direct the root route and index.html to home.html (primary entry point)
+// Direct the root route and index.html to public/index.html (primary entry point)
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "home.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.get("/index.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "home.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Serve static files from current directory
-app.use(express.static(path.join(__dirname)));
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, "public")));
 
 app.post("/generate", async (req, res) => {
   const { message } = req.body;

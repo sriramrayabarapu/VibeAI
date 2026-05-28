@@ -61,9 +61,9 @@ async function runTests() {
   }
 
   try {
-    // Test 1: Root serves home.html
+    // Test 1: Root serves index.html
     const rootRes = await get(`${BASE_URL}/`);
-    assert(rootRes.status === 200 && rootRes.body.includes('<title>VibeAI</title>'), "Root URL '/' redirects/serves home.html");
+    assert(rootRes.status === 200 && rootRes.body.includes('<title>VibeAI</title>'), "Root URL '/' redirects/serves index.html");
 
     // Test 2: style.css is served
     const cssRes = await get(`${BASE_URL}/style.css`);
@@ -78,12 +78,12 @@ async function runTests() {
     assert(aiRes.status === 400, "AI /generate endpoint blocks empty messages with 400 Bad Request");
 
     // Test 5: Verify script.js song list
-    const scriptContent = fs.readFileSync(path.join(__dirname, 'script.js'), 'utf8');
+    const scriptContent = fs.readFileSync(path.join(__dirname, 'public', 'script.js'), 'utf8');
     assert(scriptContent.includes('Naatu Naatu') && scriptContent.includes('Kesariya'), "Verify script.js has correct preset song list");
 
-    // Test 6: Verify home.html elements
-    const htmlContent = fs.readFileSync(path.join(__dirname, 'home.html'), 'utf8');
-    assert(htmlContent.includes('note-bubble') && htmlContent.includes('avatar-wrapper'), "Verify home.html contains overhauled profile layout elements");
+    // Test 6: Verify index.html elements
+    const htmlContent = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8');
+    assert(htmlContent.includes('note-bubble') && htmlContent.includes('avatar-wrapper'), "Verify index.html contains overhauled profile layout elements");
 
   } catch (err) {
     console.error("Test execution interrupted by error:", err);

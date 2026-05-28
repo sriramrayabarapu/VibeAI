@@ -220,6 +220,16 @@ function showPage(pageId) {
   document.getElementById(pageId)
   .classList.add("active");
 
+  // Manage neumorphic navbar active tab highlight
+  let navItems = document.querySelectorAll(".nav-links li");
+  navItems.forEach(item => {
+    item.classList.remove("active-tab");
+    item.style.color = ""; // Clear inline color overrides
+    if (item.getAttribute("onclick") === `showPage('${pageId}')`) {
+      item.classList.add("active-tab");
+    }
+  });
+
   // Show Spotify persistent bottom player bar ONLY when on the music page
   let player = document.getElementById("spotifyPlayer");
   if (player) {
@@ -1685,16 +1695,6 @@ async function loadProfileGrid() {
 function viewProfileReel(reelId) {
   // 1. Navigate to the Reels page
   showPage('reels');
-  
-  // 2. Set reels button active in header
-  let navItems = document.querySelectorAll(".nav-links li");
-  navItems.forEach(item => {
-    if (item.getAttribute("onclick") === "showPage('reels')") {
-      // Clean styling of all navs
-      navItems.forEach(ni => ni.style.color = "white");
-      item.style.color = "#38bdf8"; // Active light blue color
-    }
-  });
 
   // 3. Scroll to the specific Reel and play
   setTimeout(() => {

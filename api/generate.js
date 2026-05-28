@@ -1,4 +1,4 @@
-const API_KEY = process.env.GOOGLE_API_KEY || "AIzaSyA3_cEKIBYn2Sc5aERE2179b-tLN-szIn0";
+const API_KEY = process.env.GOOGLE_API_KEY || "AIzaSyAzsyQ6_oeg377G96hZEDT8sYL-4r09nV0";
 
 module.exports = async (req, res) => {
   // Handle CORS preflight & headers
@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, x-api-key"
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
   );
 
   if (req.method === "OPTIONS") {
@@ -18,13 +18,10 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: { message: "Method not allowed. Use POST." } });
   }
 
-  const clientApiKey = req.headers["x-api-key"];
-  const finalApiKey = clientApiKey || API_KEY;
-
-  if (!finalApiKey) {
+  if (!API_KEY) {
     return res.status(500).json({
       error: {
-        message: "Gemini API Key is not configured. Please add the GOOGLE_API_KEY environment variable or supply a custom API key."
+        message: "Gemini API Key is not configured. Please add the GOOGLE_API_KEY environment variable under your Vercel Project Settings."
       }
     });
   }
@@ -37,7 +34,7 @@ module.exports = async (req, res) => {
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${finalApiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
       {
         method: "POST",
         headers: {

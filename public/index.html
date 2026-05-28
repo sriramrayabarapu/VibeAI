@@ -356,23 +356,6 @@
 
       <div class="chat-container">
 
-        <!-- API Settings Panel -->
-        <div class="api-settings-panel" id="apiSettingsPanel">
-          <div class="api-settings-header" onclick="toggleApiSettings()">
-            <span>🔑 Gemini API Key Configuration</span>
-            <span id="apiToggleIcon">▼</span>
-          </div>
-          <div class="api-settings-content" id="apiSettingsContent">
-            <p>If the default proxy API key is leaked or inactive, save your own Gemini API key below. It will be stored safely in your browser's local storage and used for your chats.</p>
-            <div class="api-input-row">
-              <input type="password" id="customApiKeyInput" placeholder="Enter Gemini API key (AIzaSy...)" class="brutal-input">
-              <button onclick="saveCustomApiKey()" class="brutal-btn" style="padding: 10px 18px; font-size: 12px; border-radius: 10px; margin-top: 0; width: auto;">Save</button>
-              <button onclick="clearCustomApiKey()" class="brutal-btn clear-btn" style="padding: 10px 18px; font-size: 12px; border-radius: 10px; margin-top: 0; width: auto;">Clear</button>
-            </div>
-            <div class="api-status" id="apiStatusMessage">Checking configuration...</div>
-          </div>
-        </div>
-
         <div class="chat-box" id="chatBox">
 
           <div class="bot-message">

@@ -167,7 +167,6 @@ window.onload = () => {
   initHardcodedReel();
   initMusic();
   initCarousel();
-  initApiSettings();
 
   let isLoggedIn =
   localStorage.getItem(
@@ -247,64 +246,7 @@ function showPage(pageId) {
   }
 }
 
-// ==========================
-// CUSTOM GEMINI API KEY MANAGEMENT
-// ==========================
 
-function initApiSettings() {
-  const customKey = localStorage.getItem("vibe_custom_api_key");
-  const keyInput = document.getElementById("customApiKeyInput");
-  const statusMsg = document.getElementById("apiStatusMessage");
-  
-  if (keyInput) {
-    keyInput.value = customKey || "";
-  }
-  
-  if (statusMsg) {
-    if (customKey) {
-      statusMsg.innerText = "🔑 Using your custom Gemini API key.";
-      statusMsg.className = "api-status";
-    } else {
-      statusMsg.innerText = "🌐 Using shared cloud API proxy (default).";
-      statusMsg.className = "api-status warning";
-    }
-  }
-}
-
-function toggleApiSettings() {
-  const content = document.getElementById("apiSettingsContent");
-  const icon = document.getElementById("apiToggleIcon");
-  if (content) {
-    if (content.classList.contains("active")) {
-      content.classList.remove("active");
-      icon.innerText = "▼";
-    } else {
-      content.classList.add("active");
-      icon.innerText = "▲";
-    }
-  }
-}
-
-function saveCustomApiKey() {
-  const keyInput = document.getElementById("customApiKeyInput");
-  if (!keyInput) return;
-  const key = keyInput.value.trim();
-  
-  if (!key) {
-    alert("Please enter a valid API key or click Clear.");
-    return;
-  }
-  
-  localStorage.setItem("vibe_custom_api_key", key);
-  initApiSettings();
-  alert("✅ Custom API key saved successfully!");
-}
-
-function clearCustomApiKey() {
-  localStorage.removeItem("vibe_custom_api_key");
-  initApiSettings();
-  alert("🧹 Custom API key cleared. Using default shared proxy.");
-}
 
 // ==========================
 // GEMINI AI CHATBOT
@@ -362,20 +304,13 @@ async function sendMessage() {
     let response;
     let data;
 
-    let headers = {
-      "Content-Type": "application/json"
-    };
-
-    const customKey = localStorage.getItem("vibe_custom_api_key");
-    if (customKey) {
-      headers["x-api-key"] = customKey;
-    }
-
     response = await fetch(
       "/generate",
       {
         method: "POST",
-        headers: headers,
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           message: message
         })
@@ -388,12 +323,7 @@ async function sendMessage() {
     // SUCCESS RESPONSE
 
     if(data.error) {
-      let errMsg = data.error.message;
-      if (errMsg.includes("leaked") || errMsg.includes("API key")) {
-        botDiv.innerHTML = `❌ ${errMsg}<br><br><span style="color: #f59e0b; font-weight: bold; display: block; margin-top: 8px;">💡 Tip: Click the "🔑 Gemini API Key Configuration" panel at the top of the chat to configure your own active Gemini API key!</span>`;
-      } else {
-        botDiv.innerText = "❌ " + errMsg;
-      }
+      botDiv.innerText = "❌ " + data.error.message;
     }
     else {
       let aiText = "";

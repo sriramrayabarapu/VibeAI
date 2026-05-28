@@ -4,7 +4,7 @@ const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const API_KEY = process.env.GOOGLE_API_KEY || "AIzaSyA3_cEKIBYn2Sc5aERE2179b-tLN-szIn0";
+const API_KEY = process.env.GOOGLE_API_KEY || "AIzaSyAzsyQ6_oeg377G96hZEDT8sYL-4r09nV0";
 
 app.use(cors());
 app.use(express.json());
@@ -22,13 +22,10 @@ app.get("/index.html", (req, res) => {
 app.use(express.static(path.join(__dirname, "public")));
 
 app.post("/generate", async (req, res) => {
-  const clientApiKey = req.headers["x-api-key"];
-  const finalApiKey = clientApiKey || API_KEY;
-
-  if (!finalApiKey) {
+  if (!API_KEY) {
     return res.status(500).json({
       error: {
-        message: "Gemini API Key is not configured. Please set the GOOGLE_API_KEY environment variable or supply a custom API key."
+        message: "Gemini API Key is not configured."
       }
     });
   }
@@ -41,7 +38,7 @@ app.post("/generate", async (req, res) => {
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${finalApiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
       {
         method: "POST",
         headers: {

@@ -304,7 +304,7 @@ async function sendMessage() {
 
     try {
       response = await fetch(
-        "http://localhost:3000/generate",
+        "/generate",
         {
           method: "POST",
           headers: {

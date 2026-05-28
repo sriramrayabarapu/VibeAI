@@ -1,4 +1,4 @@
-const API_KEY = process.env.GOOGLE_API_KEY || "AIzaSyBtny1iH6dWG5ogu9ofM2IeYWZyACXFxn0";
+const API_KEY = process.env.GOOGLE_API_KEY;
 
 module.exports = async (req, res) => {
   // Handle CORS preflight & headers

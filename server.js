@@ -66,3 +66,5 @@ app.post("/generate", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`AI proxy server running at http://localhost:${PORT}`);
 });
+
+module.exports = app;

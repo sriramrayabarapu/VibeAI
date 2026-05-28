@@ -4,6 +4,10 @@
     {
       "source": "/generate",
       "destination": "/api/generate"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/public/$1"
     }
   ]
 }

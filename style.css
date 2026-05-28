@@ -381,10 +381,14 @@ body {
   position: relative;
   overflow: hidden;
   min-height: calc(100vh - 80px);
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+#home.active {
+  display: flex;
 }
 
 .hero {

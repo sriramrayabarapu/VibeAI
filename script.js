@@ -106,6 +106,8 @@ function loginUser() {
     loadUser();
 
     loadReels();
+
+    showPage('home');
   }
 
   else {
@@ -182,6 +184,8 @@ window.onload = () => {
     loadUser();
 
     loadReels();
+
+    showPage('home');
   }
 
   else {
